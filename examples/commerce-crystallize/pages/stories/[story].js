@@ -176,14 +176,12 @@ export default function Story({ data: initialData, path }) {
   if (router.isFallback) {
     return 'loading...'
   }
-  // const { catalogue } = data;
   const story = data?.data?.story
   const byline = story?.byline?.content?.items
-  console.log(story)
   return (
     <>
       <Header>
-        <Logo size="70" />
+        <Logo size="70" color="#fff" />
       </Header>
       <Outer>
         <Section>

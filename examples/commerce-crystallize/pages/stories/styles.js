@@ -13,18 +13,29 @@ export const Section = styled.section`
 export const Title = styled.h1`
   font-size: 4rem;
   line-height: 1em;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
 `
 export const SectionHeading = styled.h2``
 
 export const Content = styled.div`
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.4) 40%
+  );
 `
 export const Lead = styled.div`
   font-size: 1.3rem;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
 `
 
 export const Byline = styled.div`
@@ -40,6 +51,7 @@ export const Author = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  color: #fff;
 `
 export const AuthorName = styled.div`
   margin-left: 15px;
@@ -47,6 +59,7 @@ export const AuthorName = styled.div`
 `
 export const AuthorRole = styled.div`
   margin-left: 10px;
+  font-size: 13px;
 `
 export const AuthorPhoto = styled.div`
   width: 35px;
