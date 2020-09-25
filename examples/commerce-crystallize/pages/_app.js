@@ -1,7 +1,9 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import { SWRConfig } from 'swr'
 
-import { fetcher } from '../lib/graphql'
+import { fetcher } from 'lib/graphql'
+import { screen } from 'ui/screen'
+import { responsive } from 'ui/responsive'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -12,6 +14,8 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const theme = {
+  screen,
+  responsive,
   colors: {
     primary: '#0070f3',
   },

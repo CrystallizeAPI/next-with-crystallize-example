@@ -1,7 +1,7 @@
 import useSWR from 'swr'
 import styled from 'styled-components'
 
-import { fetcher } from '../lib/graphql'
+import { fetcher } from 'lib/graphql'
 
 // Fine tune the query in the playground: https://api.crystallize.com/<your-tenant-identifier>/catalogue
 const query = `
@@ -33,10 +33,13 @@ const query = `
   }
 `
 
-const Pre = styled.pre`
-  display: block;
-  padding: 15px;
-`
+const Pre = styled.pre(
+  ({ theme }) => `
+    display: block;
+    padding: 15px;
+    width: ${theme.screen.xs}px;
+  `
+)
 
 export async function getStaticProps() {
   const data = await fetcher(query)
