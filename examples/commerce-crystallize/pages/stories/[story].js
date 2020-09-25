@@ -1,9 +1,11 @@
 import useSWR from 'swr'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 import { useRouter } from 'next/router'
 
 import { fetcher } from 'lib/graphql'
+import Logo from 'ui/logo'
 
+import { Outer, Section, Header, Title, Byline } from './styles'
 // Fine tune the query in the playground: https://api.crystallize.com/<your-tenant-identifier>/catalogue
 const query = `
   query GET_STORY($path: String!) {
@@ -14,13 +16,13 @@ const query = `
   }
 `
 
-const Pre = styled.pre(
-  ({ theme }) => `
-    display: block;
-    padding: 15px;
-    width: ${theme.screen.xs}px;
-  `
-)
+// const Pre = styled.pre(
+//   ({ theme }) => `
+//     display: block;
+//     padding: 15px;
+//     width: ${theme.screen.xs}px;
+//   `
+// )
 
 export async function getStaticProps({ params }) {
   const path = `/stories/${params.story}`
@@ -45,6 +47,23 @@ export default function Story({ data: initialData, path }) {
   if (router.isFallback) {
     return 'loading...'
   }
+  // const { catalogue } = data;
+  console.log('data', data)
 
-  return <Pre>{JSON.stringify(data, null, 2)}</Pre>
+  return (
+    <>
+      <Header>
+        <Logo />
+      </Header>
+      <Outer>
+        <Section>
+          <Title>I wish a was a turtle inside of liberty bell</Title>
+          <Byline></Byline>
+        </Section>
+        <ParagraphSection />
+      </Outer>
+    </>
+  )
 }
+
+const ParagraphSection = () => <Section></Section>
