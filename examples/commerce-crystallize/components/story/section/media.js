@@ -41,7 +41,7 @@ export default function Media({ images, videos }) {
 
   return (
     <Outer>
-      <Image {...images?.[0]} />
+      <Image {...images?.[0]} sizes="100vw" />
     </Outer>
   )
 }

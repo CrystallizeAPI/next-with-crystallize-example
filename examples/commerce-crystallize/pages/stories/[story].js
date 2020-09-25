@@ -158,7 +158,20 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-  return { paths: [], fallback: true }
+  const data = await fetcher(`
+    {
+      catalogue(path: "/stories", language: "en") {
+        children {
+          path
+        }
+      }
+    }
+  `)
+
+  return {
+    paths: data?.data?.catalogue?.children?.map((c) => c.path) || [],
+    fallback: true,
+  }
 }
 
 export default function Story({ data: initialData, path }) {
@@ -196,23 +209,23 @@ export default function Story({ data: initialData, path }) {
             <Lead>
               <CrystallizeContent {...story?.intro?.content?.json} />
             </Lead>
+            {!!byline && (
+              <Byline>
+                {byline.map((author, i) => (
+                  <Author key={i}>
+                    <AuthorPhoto>
+                      <Image
+                        {...author?.picture?.content?.images?.[0]}
+                        sizes="50px"
+                      />
+                    </AuthorPhoto>
+                    <AuthorName>{author?.name?.content?.text}</AuthorName>
+                    <AuthorRole>{author?.role?.content?.text}</AuthorRole>
+                  </Author>
+                ))}
+              </Byline>
+            )}
           </Content>
-          {!!byline && (
-            <Byline>
-              {byline.map((author) => (
-                <Author>
-                  <AuthorPhoto>
-                    <Image
-                      {...author?.picture?.content?.images?.[0]}
-                      sizes="50px"
-                    />
-                  </AuthorPhoto>
-                  <AuthorName>{author?.name?.content?.text}</AuthorName>
-                  <AuthorRole>{author?.role?.content?.text}</AuthorRole>
-                </Author>
-              ))}
-            </Byline>
-          )}
         </Section>
         {story?.story?.content?.paragraphs?.map(
           ({ title, body, images, videos }, i) => {

@@ -30,7 +30,7 @@ export const SectionHeading = styled.h2``
 export const Content = styled.div`
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   flex-direction: column;
   display: flex;
   align-items: center;
