@@ -1,4 +1,5 @@
 import Image from '@crystallize/react-image'
+// import Video from 'components/video-player'
 import styled from 'styled-components'
 
 const Outer = styled.div`
@@ -36,7 +37,7 @@ const Outer = styled.div`
 
 export default function Media({ images, videos }) {
   // if (!!videos) {
-  //   return <div />
+  //   return <Video {...videos?.[0]} />
   // }
 
   return (

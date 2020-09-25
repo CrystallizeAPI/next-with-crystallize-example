@@ -25,21 +25,55 @@ export const Title = styled.h1`
   color: #fff;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
 `
-export const SectionHeading = styled.h2``
-
-export const Content = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100vh;
-  flex-direction: column;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+export const SectionHeading = styled.h2`
+  font-size: 2rem;
+  margin: 0;
+  line-height: 1em;
+  line-height: 1em;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+  max-width: 600px;
 `
+
+export const Content = styled.div(
+  ({ mirror, fold }) => `
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display:flex;
+    box-sizing: border-box;
+    padding:80px;
+  ${
+    mirror
+      ? `
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:flex-end;
+      `
+      : `
+      flex-direction:column;
+      align-items:flex-end;
+      justify-content:flex-end;
+
+  
+    `
+  };
+  ${
+    fold &&
+    `
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+  `
+  }
+  `
+)
+
 export const Lead = styled.div`
   font-size: 1.3rem;
   color: #fff;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+  max-width: 600px;
 `
 
 export const Byline = styled.div`

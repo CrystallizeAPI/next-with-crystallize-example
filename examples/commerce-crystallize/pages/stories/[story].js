@@ -6,6 +6,8 @@ import { useRouter } from 'next/router'
 import { fetcher } from 'lib/graphql'
 import Logo from 'ui/logo'
 import Section from 'components/story/section'
+import FeaturedProducts from 'components/story/featured-products'
+
 import {
   Outer,
   Header,
@@ -17,9 +19,11 @@ import {
   AuthorName,
   AuthorRole,
   AuthorPhoto,
+  SectionHeading,
 } from 'components/story/styles'
 
 // Fine tune the query in the playground: https://api.crystallize.com/<your-tenant-identifier>/catalogue
+
 const query = `
 query GET_STORY($path: String!) {
   story: catalogue(path: $path, language: "en") {
@@ -66,6 +70,31 @@ query GET_STORY($path: String!) {
       content {
         ... on RichTextContent {
           json
+        }
+      }
+    }
+    featuredProducts: component(id:"featured-products"){
+      id
+      name
+      content{
+        ...on ItemRelationsContent{
+          items{
+            id
+            ...on Product {
+              name
+              path
+
+              defaultVariant{
+                price
+                images{
+                  variants{
+                  	width
+                    url
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }
@@ -196,7 +225,8 @@ export default function Story({ data: initialData, path }) {
   const byline = story?.byline?.content?.items
   const heroImages = story?.hero_images?.content?.images
   const heroVideos = story?.hero_videos?.content?.videos
-
+  const storyParagraphs = story?.story?.content?.paragraphs
+  const featuredProducts = story?.featuredProducts?.content?.items
   return (
     <>
       <Header>
@@ -204,8 +234,8 @@ export default function Story({ data: initialData, path }) {
       </Header>
       <Outer>
         <Section images={heroImages} videos={heroVideos}>
-          <Content>
-            <Title>{story?.name}</Title>
+          <Content fold={true}>
+            <Title h1>{story?.name}</Title>
             <Lead>
               <CrystallizeContent {...story?.intro?.content?.json} />
             </Lead>
@@ -227,20 +257,23 @@ export default function Story({ data: initialData, path }) {
             )}
           </Content>
         </Section>
-        {story?.story?.content?.paragraphs?.map(
-          ({ title, body, images, videos }, i) => {
-            return (
+        {storyParagraphs.map(({ title, body, images, videos }, i) => {
+          return (
+            <>
               <Section key={i} images={images} videos={videos}>
-                <Content>
-                  <Title>{title?.text}</Title>
+                <Content mirror={i % 2}>
+                  <SectionHeading>{title?.text}</SectionHeading>
                   <Lead>
                     <CrystallizeContent {...body?.json} />
                   </Lead>
                 </Content>
               </Section>
-            )
-          }
-        )}
+              {i === storyParagraphs.length - 1 && (
+                <FeaturedProducts products={featuredProducts} />
+              )}
+            </>
+          )
+        })}
       </Outer>
     </>
   )

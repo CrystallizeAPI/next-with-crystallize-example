@@ -15,7 +15,6 @@ const CoverImage = styled.div.attrs((props) => ({
   },
 }))`
   opacity: 0;
-  position: relative;
   position: fixed;
   top: 0;
   left: 0;
@@ -25,9 +24,11 @@ const CoverImage = styled.div.attrs((props) => ({
   overflow: hidden;
 `
 
-const Content = styled.div`
-  position: relative;
+const ContentWrapper = styled.div`
+  position: absolute;
   z-index: 3;
+  height: 100%;
+  width: 100%;
 `
 
 export default function Section({ children, images, videos }) {
@@ -35,13 +36,12 @@ export default function Section({ children, images, videos }) {
   const intersectionEntry = useIntersectionObserver(ref, {
     threshold: [0.0, 0.75],
   })
-
   return (
     <Outer ref={ref}>
       <CoverImage $visibility={intersectionEntry?.intersectionRatio}>
         <Media images={images} videos={videos} />
       </CoverImage>
-      <Content>{children}</Content>
+      <ContentWrapper>{children}</ContentWrapper>
     </Outer>
   )
 }
