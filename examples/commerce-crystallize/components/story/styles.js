@@ -4,11 +4,20 @@ export const Header = styled.header`
   position: fixed;
   padding: 50px 50px;
 `
-export const Outer = styled.div``
-
-export const Section = styled.section`
-  min-height: 100vh;
+export const Outer = styled.div(
+  ({ center }) => `
+  ${
+    center &&
+    `
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center
+  `
+  };
 `
+)
 
 export const Title = styled.h1`
   font-size: 4rem;
@@ -26,11 +35,6 @@ export const Content = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.4) 40%
-  );
 `
 export const Lead = styled.div`
   font-size: 1.3rem;
@@ -73,5 +77,3 @@ export const AuthorPhoto = styled.div`
     object-fit: cover;
   }
 `
-
-export const CoverImage = styled.div``

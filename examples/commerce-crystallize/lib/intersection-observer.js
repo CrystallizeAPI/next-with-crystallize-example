@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 export function useIntersectionObserver(ref, options) {
   const [entry, setEntry] = useState(null)
 
+  // Listen for changes
   useEffect(() => {
     function onObservation([entry]) {
       setEntry(entry)
@@ -16,7 +17,16 @@ export function useIntersectionObserver(ref, options) {
 
       observer.observe(ref.current)
 
-      return () => observer.disconnect()
+      // const interval = setInterval(() => {
+      //   if (entry?.isIntersecting) {
+      //     console.log(observer.takeRecords())
+      //   }
+      // }, 50)
+
+      return () => {
+        observer.disconnect()
+        // clearInterval(interval)
+      }
     }
   }, [ref, options])
 

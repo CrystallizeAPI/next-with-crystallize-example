@@ -1,15 +1,13 @@
 import useSWR from 'swr'
-// import styled from 'styled-components'
+import Image from '@crystallize/react-image'
+import CrystallizeContent from '@crystallize/content-transformer/react'
 import { useRouter } from 'next/router'
 
 import { fetcher } from 'lib/graphql'
 import Logo from 'ui/logo'
-import CrystallizeContent from '@crystallize/content-transformer/react'
-import Image from '@crystallize/react-image'
-import Media from './media'
+import Section from 'components/story/section'
 import {
   Outer,
-  Section,
   Header,
   Title,
   Byline,
@@ -19,8 +17,7 @@ import {
   AuthorName,
   AuthorRole,
   AuthorPhoto,
-  CoverImage,
-} from './styles'
+} from 'components/story/styles'
 
 // Fine tune the query in the playground: https://api.crystallize.com/<your-tenant-identifier>/catalogue
 const query = `
@@ -39,7 +36,7 @@ query GET_STORY($path: String!) {
         }
       }
     }
-    hero: component(id: "hero") {
+    hero_images: component(id: "hero") {
       content {
         ... on ImageContent {
           images {
@@ -54,7 +51,7 @@ query GET_STORY($path: String!) {
         }
       }
     }
-    hero_video: component(id: "hero-video") {
+    hero_videos: component(id: "hero-video") {
       content {
         ... on VideoContent {
           videos {
@@ -157,8 +154,6 @@ export async function getStaticProps({ params }) {
   const path = `/stories/${params.story}`
   const data = await fetcher([query, { path }])
 
-  console.log(path, params)
-
   return { props: { data, path } }
 }
 
@@ -174,20 +169,28 @@ export default function Story({ data: initialData, path }) {
   })
 
   if (router.isFallback) {
-    return 'loading...'
+    return (
+      <>
+        <Header>
+          <Logo size="70" color="#fff" />
+        </Header>
+        <Outer center>Loading...</Outer>
+      </>
+    )
   }
+
   const story = data?.data?.story
   const byline = story?.byline?.content?.items
+  const heroImages = story?.hero_images?.content?.images
+  const heroVideos = story?.hero_videos?.content?.videos
+
   return (
     <>
       <Header>
         <Logo size="70" color="#fff" />
       </Header>
       <Outer>
-        <Section>
-          <CoverImage>
-            <Media {...story} />
-          </CoverImage>
+        <Section images={heroImages} videos={heroVideos}>
           <Content>
             <Title>{story?.name}</Title>
             <Lead>
@@ -211,10 +214,21 @@ export default function Story({ data: initialData, path }) {
             </Byline>
           )}
         </Section>
-        {story?.content?.paragraphs.length && <ParagraphSection />}
+        {story?.story?.content?.paragraphs?.map(
+          ({ title, body, images, videos }, i) => {
+            return (
+              <Section key={i} images={images} videos={videos}>
+                <Content>
+                  <Title>{title?.text}</Title>
+                  <Lead>
+                    <CrystallizeContent {...body?.json} />
+                  </Lead>
+                </Content>
+              </Section>
+            )
+          }
+        )}
       </Outer>
     </>
   )
 }
-
-const ParagraphSection = () => <Section></Section>
