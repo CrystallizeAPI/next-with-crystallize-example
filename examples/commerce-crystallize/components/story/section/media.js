@@ -1,6 +1,14 @@
 import Image from '@crystallize/react-image'
-// import Video from 'components/video-player'
+import Video from 'components/video'
 import styled from 'styled-components'
+
+const StyledVideo = styled(Video)`
+  height: 100vh !important;
+
+  video {
+    object-fit: cover !important;
+  }
+`
 
 const Outer = styled.div`
   position: fixed;
@@ -36,12 +44,8 @@ const Outer = styled.div`
 `
 
 export default function Media({ images, videos }) {
-  // if (!!videos) {
-  //   return <Video {...videos?.[0]} />
-  // }
-
-  if (videos) {
-    console.log({ videos })
+  if (!!videos) {
+    return <StyledVideo autoplay playslinline {...videos?.[0]} />
   }
 
   return (
