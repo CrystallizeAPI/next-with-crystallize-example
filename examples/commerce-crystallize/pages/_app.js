@@ -5,6 +5,8 @@ import { fetcher } from 'lib/graphql'
 import { screen } from 'ui/screen'
 import { responsive } from 'ui/responsive'
 
+import '@vime/core/themes/default.css'
+
 const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Open Sans', sans-serif;

@@ -259,8 +259,8 @@ export default function Story({ data: initialData, path }) {
         </Section>
         {storyParagraphs.map(({ title, body, images, videos }, i) => {
           return (
-            <>
-              <Section key={i} images={images} videos={videos}>
+            <div key={i}>
+              <Section images={images} videos={videos}>
                 <Content mirror={i % 2}>
                   <SectionHeading>{title?.text}</SectionHeading>
                   <Lead>
@@ -271,7 +271,7 @@ export default function Story({ data: initialData, path }) {
               {i === storyParagraphs.length - 1 && (
                 <FeaturedProducts products={featuredProducts} />
               )}
-            </>
+            </div>
           )
         })}
       </Outer>

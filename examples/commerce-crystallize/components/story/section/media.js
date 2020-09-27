@@ -40,6 +40,10 @@ export default function Media({ images, videos }) {
   //   return <Video {...videos?.[0]} />
   // }
 
+  if (videos) {
+    console.log({ videos })
+  }
+
   return (
     <Outer>
       <Image {...images?.[0]} sizes="100vw" />

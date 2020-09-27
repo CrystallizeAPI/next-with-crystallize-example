@@ -36,6 +36,7 @@ export default function Section({ children, images, videos }) {
   const intersectionEntry = useIntersectionObserver(ref, {
     threshold: [0.0, 0.75],
   })
+
   return (
     <Outer ref={ref}>
       <CoverImage $visibility={intersectionEntry?.intersectionRatio}>
