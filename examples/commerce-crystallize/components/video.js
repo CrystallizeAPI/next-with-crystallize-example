@@ -9,12 +9,12 @@ export default function Video({ playlists, thumbnails, ...rest }) {
   const poster = thumbnails?.[0].url
   return (
     <Outer>
-      <VimePlayer {...rest}>
+      <VimePlayer muted {...rest}>
         {playlists.map((src) => {
           if (src.endsWith('.m3u8')) {
             return (
               <VimeHls key="src-hls" version="latest" poster={poster}>
-                <source src={src} type="application/x-mpegURL" />
+                <source data-src={src} type="application/x-mpegURL" />
               </VimeHls>
             )
           }
@@ -22,7 +22,7 @@ export default function Video({ playlists, thumbnails, ...rest }) {
           return (
             <VimeDash
               key="src-dash"
-              src={src}
+              data-src={src}
               version="latest"
               poster={poster}
             />
