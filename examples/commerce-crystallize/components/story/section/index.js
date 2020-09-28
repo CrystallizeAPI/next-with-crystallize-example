@@ -6,15 +6,11 @@ import { useIntersectionObserver } from 'lib/intersection-observer'
 import Media from './media'
 
 const Outer = styled.section`
-  min-height: 150vh;
+  min-height: 100vh;
 `
 
-const CoverImage = styled.div.attrs((props) => ({
-  style: {
-    opacity: props.$visibility,
-  },
-}))`
-  opacity: 0;
+const CoverMedia = styled.div`
+  opacity: ${(p) => (p.$show ? 1 : 0)};
   position: fixed;
   top: 0;
   left: 0;
@@ -22,6 +18,7 @@ const CoverImage = styled.div.attrs((props) => ({
   width: 100%;
   height: 100%;
   overflow: hidden;
+  transition: opacity 0.5s ease-in-out 0ms;
 `
 
 const ContentWrapper = styled.div`
@@ -34,14 +31,16 @@ const ContentWrapper = styled.div`
 export default function Section({ children, images, videos }) {
   const ref = useRef()
   const intersectionEntry = useIntersectionObserver(ref, {
-    threshold: [0.0, 0.75],
+    threshold: 0.2,
   })
+
+  const show = intersectionEntry?.intersectionRatio > 0.5
 
   return (
     <Outer ref={ref}>
-      <CoverImage $visibility={intersectionEntry?.intersectionRatio}>
-        <Media images={images} videos={videos} />
-      </CoverImage>
+      <CoverMedia $show={show}>
+        <Media images={images} videos={videos} show={show} />
+      </CoverMedia>
       <ContentWrapper>{children}</ContentWrapper>
     </Outer>
   )

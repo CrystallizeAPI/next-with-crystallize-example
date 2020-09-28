@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import Link from 'next/link'
 import Image from '@crystallize/react-image'
+
 const Outer = styled.div`
   background: #e1c8c2;
 `
-
 const Inner = styled.div`
   max-width: 1600px;
   width: 100%;
@@ -68,7 +68,7 @@ export default function FeaturedProducts({ products }) {
         {products.map((prod, i) => {
           const { path, name, defaultVariant } = prod
           return (
-            <Link href={path} as={path}>
+            <Link href={path} as={path} key={i}>
               <Product>
                 <ImgWrapper>
                   <Image {...defaultVariant?.images?.[0]} sizes="33vw" />

@@ -60,6 +60,16 @@ query GET_STORY($path: String!) {
         ... on VideoContent {
           videos {
             playlists
+
+            thumbnails {
+              url
+              altText
+              variants {
+                url
+                width
+                height
+              }
+            }
           }
         }
       }
@@ -120,8 +130,17 @@ query GET_STORY($path: String!) {
                 height
               }
             }
-            videos{
+            videos {
               playlists
+              thumbnails {
+                url
+                altText
+                variants {
+                  url
+                  width
+                  height
+                }
+              }
             }
           }
         }
@@ -227,6 +246,7 @@ export default function Story({ data: initialData, path }) {
   const heroVideos = story?.hero_videos?.content?.videos
   const storyParagraphs = story?.story?.content?.paragraphs
   const featuredProducts = story?.featuredProducts?.content?.items
+
   return (
     <>
       <Header>
@@ -259,21 +279,17 @@ export default function Story({ data: initialData, path }) {
         </Section>
         {storyParagraphs.map(({ title, body, images, videos }, i) => {
           return (
-            <div key={i}>
-              <Section images={images} videos={videos}>
-                <Content mirror={i % 2}>
-                  <SectionHeading>{title?.text}</SectionHeading>
-                  <Lead>
-                    <CrystallizeContent {...body?.json} />
-                  </Lead>
-                </Content>
-              </Section>
-              {i === storyParagraphs.length - 1 && (
-                <FeaturedProducts products={featuredProducts} />
-              )}
-            </div>
+            <Section images={images} videos={videos} key={i}>
+              <Content mirror={i % 2}>
+                <SectionHeading>{title?.text}</SectionHeading>
+                <Lead>
+                  <CrystallizeContent {...body?.json} />
+                </Lead>
+              </Content>
+            </Section>
           )
         })}
+        <FeaturedProducts products={featuredProducts} />
       </Outer>
     </>
   )

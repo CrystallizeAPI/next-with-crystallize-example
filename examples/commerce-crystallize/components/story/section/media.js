@@ -43,9 +43,11 @@ const Outer = styled.div`
   }
 `
 
-export default function Media({ images, videos }) {
+export default function Media({ images, videos, show }) {
   if (!!videos) {
-    return <StyledVideo autoplay playslinline {...videos?.[0]} />
+    return (
+      <StyledVideo autoplay playslinline loop play={show} {...videos?.[0]} />
+    )
   }
 
   return (

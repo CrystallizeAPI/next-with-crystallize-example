@@ -1,34 +1,40 @@
 import { useState, useEffect } from 'react'
 
-export function useIntersectionObserver(ref, options) {
+function buildThresholdList() {
+  let thresholds = []
+  let numSteps = 200
+
+  for (let i = 1; i <= numSteps; i++) {
+    let ratio = i / numSteps
+    thresholds.push(ratio)
+  }
+
+  thresholds.push(0)
+  return thresholds
+}
+
+export function useIntersectionObserver(ref, { threshold } = {}) {
   const [entry, setEntry] = useState(null)
 
   // Listen for changes
   useEffect(() => {
-    function onObservation([entry]) {
-      setEntry(entry)
+    function onObservation([newEntry]) {
+      setEntry(newEntry)
     }
 
     if (ref.current) {
       const observer = new IntersectionObserver(onObservation, {
-        rootMargin: '50% 0px',
-        ...options,
+        rootMargin: '0px 0px',
+        threshold: buildThresholdList(),
       })
 
       observer.observe(ref.current)
 
-      // const interval = setInterval(() => {
-      //   if (entry?.isIntersecting) {
-      //     console.log(observer.takeRecords())
-      //   }
-      // }, 50)
-
       return () => {
         observer.disconnect()
-        // clearInterval(interval)
       }
     }
-  }, [ref, options])
+  }, [ref, threshold])
 
   return entry
 }
