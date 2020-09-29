@@ -281,16 +281,21 @@ export default function Story({ data: initialData, path }) {
           </Section>
           {storyParagraphs.map(({ title, body, images, videos }, i) => {
             return (
-              <Section images={images} videos={videos} key={i}>
-                <Content mirror={i % 2}>
-                  <ContentInner>
-                    <SectionHeading>{title?.text}</SectionHeading>
-                    <Lead>
-                      <CrystallizeContent {...body?.json} />
-                    </Lead>
-                  </ContentInner>
-                </Content>
-              </Section>
+              <>
+                {i === Math.round(storyParagraphs.length / 2) && (
+                  <FeaturedProducts products={featuredProducts} />
+                )}
+                <Section images={images} videos={videos} key={i}>
+                  <Content mirror={i % 2}>
+                    <ContentInner>
+                      <SectionHeading>{title?.text}</SectionHeading>
+                      <Lead>
+                        <CrystallizeContent {...body?.json} />
+                      </Lead>
+                    </ContentInner>
+                  </Content>
+                </Section>
+              </>
             )
           })}
           <FeaturedProducts products={featuredProducts} />
