@@ -48,8 +48,9 @@ export default function VideoPlayer({
   playlists,
   autoplay = false,
   loop = false,
-  controls = true,
+  controls = false,
   fluid = true,
+  muted = true,
   play,
   onReady,
   ...rest
@@ -76,16 +77,12 @@ export default function VideoPlayer({
           sources,
           autoplay,
           loop,
-          controls: false,
+          muted,
+          controls,
           fluid,
         },
         onReady
       )
-
-      // Video.js does not always autoplay for some reason
-      if (autoplay) {
-        setTimeout(() => playerRef.current.play(), 0)
-      }
 
       return () => {
         try {
@@ -96,7 +93,7 @@ export default function VideoPlayer({
         }
       }
     }
-  }, [playlists, loop, fluid, autoplay, onReady])
+  }, [playlists, loop, fluid, controls, muted, autoplay, onReady])
 
   useEffect(() => {
     if (playerRef.current) {

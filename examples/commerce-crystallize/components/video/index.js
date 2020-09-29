@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import dynamic from 'next/dynamic'
 import Image from '@crystallize/react-image'
@@ -43,10 +43,13 @@ export default function Video({
   ...rest
 }) {
   const ref = useRef()
-  const [load, setLoad] = useState(true)
+  const [load, setLoad] = useState(false)
   const [videoIsReady, setVideoIsReady] = useState(false)
   const entry = useIntersectionObserver(ref)
-  const onVideoReady = useMemo(() => setVideoIsReady(true), [])
+
+  function onVideoReady() {
+    setVideoIsReady(true)
+  }
 
   useEffect(() => {
     if (!videoIsReady && entry?.isIntersecting && !load) {

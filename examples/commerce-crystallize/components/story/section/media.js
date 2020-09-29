@@ -43,16 +43,27 @@ const Outer = styled.div`
   }
 `
 
-export default function Media({ images, videos, show }) {
+export default function Media({ images, videos, show, nolazy }) {
   if (!!videos) {
     return (
-      <StyledVideo autoplay playsInline loop play={show} {...videos?.[0]} />
+      <StyledVideo
+        autoplay
+        playsInline
+        loop
+        play={show}
+        nolazy={nolazy}
+        {...videos?.[0]}
+      />
     )
   }
 
   return (
     <Outer>
-      <Image {...images?.[0]} sizes="100vw" />
+      <Image
+        {...images?.[0]}
+        sizes="100vw"
+        loading={nolazy ? 'eager' : 'lazy'}
+      />
     </Outer>
   )
 }

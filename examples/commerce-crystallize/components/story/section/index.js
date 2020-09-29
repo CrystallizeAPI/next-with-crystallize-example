@@ -47,7 +47,7 @@ const ContentWrapper = styled.div`
   width: 100%;
 `
 
-export default function Section({ children, images, videos }) {
+export default function Section({ children, images, videos, nolazy }) {
   const ref = useRef()
   const intersectionEntry = useIntersectionObserver(ref, {
     threshold: 0.2,
@@ -58,7 +58,7 @@ export default function Section({ children, images, videos }) {
   return (
     <Outer ref={ref}>
       <CoverMedia $show={show}>
-        <Media images={images} videos={videos} show={show} />
+        <Media images={images} videos={videos} show={show} nolazy={nolazy} />
       </CoverMedia>
       <ContentWrapper>{children}</ContentWrapper>
     </Outer>

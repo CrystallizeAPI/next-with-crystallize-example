@@ -203,7 +203,7 @@ export async function getStaticProps({ params }) {
   const path = `/stories/${params.story}`
   const data = await fetcher([query, { path }])
 
-  return { props: { data, path } }
+  return { props: { data, path }, revalidate: 1 }
 }
 
 export async function getStaticPaths() {
@@ -255,7 +255,7 @@ export default function Story({ data: initialData, path }) {
           <Logo size="70" color="#fff" />
         </Header>
         <Outer>
-          <Section images={heroImages} videos={heroVideos}>
+          <Section images={heroImages} videos={heroVideos} nolazy>
             <Content fold={true}>
               <Title h1>{story?.name}</Title>
               <Lead>
