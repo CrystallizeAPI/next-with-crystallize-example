@@ -1,11 +1,64 @@
 import styled from 'styled-components'
 
+const contentMaxWidth = '550px'
+
+export const ScrollWrapper = styled.div`
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+`
 export const Header = styled.header`
   position: fixed;
-  padding: 50px 50px;
+  padding: 25px;
+  ${({ theme }) => theme.responsive.smPlus} {
+    padding: 50px 50px;
+  }
 `
+
+export const Title = styled.h1`
+  font-size: 2.5rem;
+  text-align: center;
+  line-height: 1em;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+  ${({ theme }) => theme.responsive.smPlus} {
+    font-size: 4rem;
+  }
+`
+
+export const SectionHeading = styled.h2`
+  margin: 0;
+  font-size: 1.5rem;
+
+  line-height: 1em;
+  line-height: 1em;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+  max-width: ${contentMaxWidth};
+  width: 100%;
+  ${({ theme }) => theme.responsive.smPlus} {
+    font-size: 2rem;
+  }
+`
+
+export const Lead = styled.div`
+  font-size: 0.9rem;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
+  max-width: ${contentMaxWidth};
+  width: 100%;
+  ${({ theme }) => theme.responsive.smPlus} {
+    font-size: 1.3rem;
+  }
+`
+
 export const Outer = styled.div(
   ({ center }) => `
+  height:100vh;
+  overflow: scroll;
+  scroll-snap-type: mandatory;
+  scroll-snap-points-y: repeat(100vh);
+  scroll-snap-type: y mandatory;
   ${
     center &&
     `
@@ -18,23 +71,6 @@ export const Outer = styled.div(
   };
 `
 )
-
-export const Title = styled.h1`
-  font-size: 4rem;
-  line-height: 1em;
-  color: #fff;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
-`
-export const SectionHeading = styled.h2`
-  font-size: 2rem;
-  margin: 0;
-  line-height: 1em;
-  line-height: 1em;
-  color: #fff;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
-  max-width: 600px;
-`
-
 export const Content = styled.div(
   ({ mirror, fold }) => `
     position: absolute;
@@ -42,7 +78,6 @@ export const Content = styled.div(
     height: 100%;
     display:flex;
     box-sizing: border-box;
-    padding:80px;
   ${
     mirror
       ? `
@@ -55,6 +90,7 @@ export const Content = styled.div(
       align-items:flex-end;
       justify-content:flex-end;
 
+
   
     `
   };
@@ -64,16 +100,18 @@ export const Content = styled.div(
       align-items:center;
       justify-content:center;
       flex-direction:column;
+      ${Lead}{
+        text-align:center;
+      }
   `
   }
   `
 )
-
-export const Lead = styled.div`
-  font-size: 1.3rem;
-  color: #fff;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.6);
-  max-width: 600px;
+export const ContentInner = styled.div`
+  padding: 4em;
+  ${({ theme }) => theme.responsive.mdPlus} {
+    padding: 70px 150px;
+  }
 `
 
 export const Byline = styled.div`

@@ -10,10 +10,12 @@ import FeaturedProducts from 'components/story/featured-products'
 
 import {
   Outer,
+  ScrollWrapper,
   Header,
   Title,
   Byline,
   Content,
+  ContentInner,
   Lead,
   Author,
   AuthorName,
@@ -23,7 +25,6 @@ import {
 } from 'components/story/styles'
 
 // Fine tune the query in the playground: https://api.crystallize.com/<your-tenant-identifier>/catalogue
-
 const query = `
 query GET_STORY($path: String!) {
   story: catalogue(path: $path, language: "en") {
@@ -249,48 +250,52 @@ export default function Story({ data: initialData, path }) {
 
   return (
     <>
-      <Header>
-        <Logo size="70" color="#fff" />
-      </Header>
-      <Outer>
-        <Section images={heroImages} videos={heroVideos}>
-          <Content fold={true}>
-            <Title h1>{story?.name}</Title>
-            <Lead>
-              <CrystallizeContent {...story?.intro?.content?.json} />
-            </Lead>
-            {!!byline && (
-              <Byline>
-                {byline.map((author, i) => (
-                  <Author key={i}>
-                    <AuthorPhoto>
-                      <Image
-                        {...author?.picture?.content?.images?.[0]}
-                        sizes="50px"
-                      />
-                    </AuthorPhoto>
-                    <AuthorName>{author?.name?.content?.text}</AuthorName>
-                    <AuthorRole>{author?.role?.content?.text}</AuthorRole>
-                  </Author>
-                ))}
-              </Byline>
-            )}
-          </Content>
-        </Section>
-        {storyParagraphs.map(({ title, body, images, videos }, i) => {
-          return (
-            <Section images={images} videos={videos} key={i}>
-              <Content mirror={i % 2}>
-                <SectionHeading>{title?.text}</SectionHeading>
-                <Lead>
-                  <CrystallizeContent {...body?.json} />
-                </Lead>
-              </Content>
-            </Section>
-          )
-        })}
-        <FeaturedProducts products={featuredProducts} />
-      </Outer>
+      <ScrollWrapper>
+        <Header>
+          <Logo size="70" color="#fff" />
+        </Header>
+        <Outer>
+          <Section images={heroImages} videos={heroVideos}>
+            <Content fold={true}>
+              <Title h1>{story?.name}</Title>
+              <Lead>
+                <CrystallizeContent {...story?.intro?.content?.json} />
+              </Lead>
+              {!!byline && (
+                <Byline>
+                  {byline.map((author, i) => (
+                    <Author key={i}>
+                      <AuthorPhoto>
+                        <Image
+                          {...author?.picture?.content?.images?.[0]}
+                          sizes="50px"
+                        />
+                      </AuthorPhoto>
+                      <AuthorName>{author?.name?.content?.text}</AuthorName>
+                      <AuthorRole>{author?.role?.content?.text}</AuthorRole>
+                    </Author>
+                  ))}
+                </Byline>
+              )}
+            </Content>
+          </Section>
+          {storyParagraphs.map(({ title, body, images, videos }, i) => {
+            return (
+              <Section images={images} videos={videos} key={i}>
+                <Content mirror={i % 2}>
+                  <ContentInner>
+                    <SectionHeading>{title?.text}</SectionHeading>
+                    <Lead>
+                      <CrystallizeContent {...body?.json} />
+                    </Lead>
+                  </ContentInner>
+                </Content>
+              </Section>
+            )
+          })}
+          <FeaturedProducts products={featuredProducts} />
+        </Outer>
+      </ScrollWrapper>
     </>
   )
 }

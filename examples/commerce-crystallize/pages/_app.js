@@ -12,8 +12,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Open Sans', sans-serif;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
-    
+    background:#000;
     * {
       box-sizing: border-box;
     }

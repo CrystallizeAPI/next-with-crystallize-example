@@ -46,7 +46,7 @@ const Outer = styled.div`
 export default function Media({ images, videos, show }) {
   if (!!videos) {
     return (
-      <StyledVideo autoplay playslinline loop play={show} {...videos?.[0]} />
+      <StyledVideo autoplay playsInline loop play={show} {...videos?.[0]} />
     )
   }
 
