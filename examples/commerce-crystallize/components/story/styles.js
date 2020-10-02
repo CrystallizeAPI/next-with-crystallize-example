@@ -7,13 +7,6 @@ export const ScrollWrapper = styled.div`
   overflow: hidden;
   position: relative;
 `
-export const Header = styled.header`
-  position: fixed;
-  padding: 25px;
-  ${({ theme }) => theme.responsive.smPlus} {
-    padding: 50px 50px;
-  }
-`
 
 export const Title = styled.h1`
   font-size: 2.5rem;

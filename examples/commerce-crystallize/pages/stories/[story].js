@@ -4,14 +4,12 @@ import CrystallizeContent from '@crystallize/content-transformer/react'
 import { useRouter } from 'next/router'
 
 import { fetcher } from 'lib/graphql'
-import Logo from 'ui/logo'
 import Section from 'components/story/section'
 import FeaturedProducts from 'components/story/featured-products'
-
+import Layout from 'components/layout'
 import {
   Outer,
   ScrollWrapper,
-  Header,
   Title,
   Byline,
   Content,
@@ -231,14 +229,7 @@ export default function Story({ data: initialData, path }) {
   })
 
   if (router.isFallback) {
-    return (
-      <>
-        <Header>
-          <Logo size="70" color="#fff" />
-        </Header>
-        <Outer center>Loading...</Outer>
-      </>
-    )
+    return <Outer center>Loading...</Outer>
   }
 
   const story = data?.data?.story
@@ -249,11 +240,8 @@ export default function Story({ data: initialData, path }) {
   const featuredProducts = story?.featuredProducts?.content?.items
 
   return (
-    <>
+    <Layout tint="white">
       <ScrollWrapper>
-        <Header>
-          <Logo size="70" color="#fff" />
-        </Header>
         <Outer>
           <Section images={heroImages} videos={heroVideos} nolazy>
             <Content fold={true}>
@@ -301,6 +289,6 @@ export default function Story({ data: initialData, path }) {
           <FeaturedProducts products={featuredProducts} />
         </Outer>
       </ScrollWrapper>
-    </>
+    </Layout>
   )
 }
