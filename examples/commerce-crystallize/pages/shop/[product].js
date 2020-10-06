@@ -82,7 +82,7 @@ const Content = styled.div`
 `
 const RichContent = styled.section`
   background: #fff;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding: 100px 25px;
   ${({ theme }) => theme.responsive.mdPlus} {
     padding: 100px 100px;
@@ -92,47 +92,86 @@ const RichContent = styled.section`
   }
 `
 
-const PropertiesTable = styled.div`
+const Section = styled.div`
   display: grid;
-  grid-template-columns: 1fr;
-  max-width: 1200px;
   margin: 50px auto;
-  h3 {
-    padding: 5px 0;
-    position: absolute;
-    transform: translateY(-200%);
-    left: 50px;
-  }
+  grid-template-columns: 1fr;
 
-  ${({ theme }) => theme.responsive.lg} {
-    h3 {
-      transform: translateY(0);
-      left: 100px;
-    }
+  h3 {
+    margin: 0 0 25px 0;
   }
 
   ${({ theme }) => theme.responsive.smPlus} {
-    grid-template-columns: 1fr 1fr;
-    h3 {
-      left: 150px;
-    }
-  }
-  ${({ theme }) => theme.responsive.sm} {
-    h3 {
-      left: 100px;
-    }
+    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 `
 const Bulk = styled.div`
-  display: grid;
-  padding: 25px 25px;
   h5 {
     margin: 0;
     padding: 0;
     font-size: 20px;
   }
+`
+
+const BulkOuter = styled.div`
+  display: grid;
+  grid-gap: 25px;
+  grid-column-end: span 3;
+  grid-template-columns: 1fr;
+  ${({ theme }) => theme.responsive.mdPlus} {
+    grid-template-columns: 1fr 1fr;
+  }
   ${({ theme }) => theme.responsive.smPlus} {
-    padding: 25px 50px;
+    grid-column-start: 2;
+    grid-gap: 50px;
+  }
+`
+
+const Collection = styled.div`
+  margin: 0 auto;
+  display: grid;
+  ${({ theme }) => theme.responsive.smPlus} {
+    grid-template-columns: 1fr 1fr;
+  }
+`
+const CollectionOuter = styled.div`
+  grid-column-end: span 3;
+`
+const Paragraph = styled.div`
+  padding: 50px 0;
+  font-size: 18px;
+
+  ${({ theme }) => theme.responsive.smPlus} {
+    padding: 150px 0;
+
+    h4 {
+      font-size: 24px;
+    }
+    p {
+      line-height: 1.8em;
+    }
+  }
+
+  ${({ theme }) => theme.responsive.sm} {
+    padding: 75px 0;
+    grid-column-end: span 2;
+  }
+`
+
+const MediaWrapper = styled.div`
+  grid-column-end: span 2;
+  display: grid;
+  position: relative;
+  grid-gap: 10px;
+  grid-template-columns: 1fr;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  ${({ theme }) => theme.responsive.smPlus} {
+    grid-template-columns: ${(p) => `repeat(${p.count}, 1fr)`};
   }
 `
 
@@ -181,6 +220,44 @@ query GET_PRODUCT($path: String!) {
           }
         }
       }
+    }
+    description: component(id: "description") {
+      id
+      name
+      type
+      content {
+        ... on ParagraphCollectionContent {
+          paragraphs {
+            title {
+              text
+            }
+            body {
+              json
+            }
+            images {
+              url
+              altText
+              variants {
+                url
+                width
+                height
+              }
+            }
+            videos {
+              playlists
+              thumbnails {
+                url
+                altText
+                variants {
+                  url
+                  width
+                  height
+                }
+              }
+            }
+          }
+        }
+      }
     }  
   }
 }
@@ -225,6 +302,8 @@ export default function Story({ data: initialData, path }) {
   const price = product?.defaultVariant?.price
   const summary = product?.summary?.content?.json
   const features = product?.features?.content?.sections
+  const description = product?.description
+
   return (
     <>
       <Head>
@@ -260,16 +339,45 @@ export default function Story({ data: initialData, path }) {
           </ProductWrapper>
           <RichContent>
             {features?.map((feature) => (
-              <PropertiesTable>
+              <Section>
                 <h3>{feature?.title}</h3>
-                {feature?.properties?.map((property) => (
-                  <Bulk>
-                    <h5>{property?.key}</h5>
-                    <p>{property?.value}</p>
-                  </Bulk>
-                ))}
-              </PropertiesTable>
+                <BulkOuter>
+                  {feature?.properties?.map((property) => (
+                    <Bulk>
+                      <h5>{property?.key}</h5>
+                      <p>{property?.value}</p>
+                    </Bulk>
+                  ))}
+                </BulkOuter>
+              </Section>
             ))}
+            {!!description?.content?.paragraphs?.length && (
+              <Section>
+                <h3>{description?.name}</h3>
+                <CollectionOuter>
+                  {description.content.paragraphs.map((paragraph) => (
+                    <Collection>
+                      {!!paragraph?.images?.length && (
+                        <MediaWrapper count={paragraph.images.length}>
+                          {paragraph?.images?.map((img) => (
+                            <Image
+                              {...img}
+                              sizes={`@media(min-width:1024px) ${
+                                100 / paragraph.images.length
+                              }vw, 100vw`}
+                            />
+                          ))}
+                        </MediaWrapper>
+                      )}
+                      <Paragraph>
+                        <h4>{paragraph?.title?.text}</h4>
+                        <CrystallizeContent {...paragraph?.body?.json} />
+                      </Paragraph>
+                    </Collection>
+                  ))}
+                </CollectionOuter>
+              </Section>
+            )}
           </RichContent>
         </Outer>
       </Layout>
