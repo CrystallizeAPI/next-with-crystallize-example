@@ -1,16 +1,35 @@
 import React from 'react'
-
+import styled from 'styled-components'
 import Story from './story'
+import Product from './product'
 
+const NotSupported = styled.div`
+  background: ${({ theme }) => theme.colors.productBg};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: ${({ theme }) => theme.styles.borderRadius};
+  strong {
+    margin-right: 5px;
+  }
+`
 const renderer = (item) => {
-  //Instead of type, lets return based on Shape name so we can have different renderes for each shape
+  //Instead of type we are returning component based on the Shape name so we can have different renderers for each shape
   // (i.e differentiate on a Story and a Blog)
   const shapeTypes = {
-    Product: <div>Product</div>,
+    Product: <Product {...item} />,
     Folder: <div>Folder</div>,
     Story: <Story {...item} />,
   }
-  return shapeTypes[item.shape.name]
+  const Component = shapeTypes[item.shape.name]
+
+  return (
+    Component || (
+      <NotSupported>
+        <strong>{item.shape.name}</strong> not supported
+      </NotSupported>
+    )
+  )
 }
 
 const MicroFormats = (item) => renderer(item)

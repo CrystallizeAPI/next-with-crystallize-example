@@ -1,45 +1,111 @@
 import useSWR from 'swr'
 import styled from 'styled-components'
-
+import Layout from 'components/layout'
 import { fetcher } from 'lib/graphql'
+import Microformats from 'components/microformats'
+
+const Outer = styled.div`
+  background: #fff;
+  min-height: 100vh;
+  padding: 150px 0;
+`
+
+const GridRow = styled.section`
+  display: grid;
+  margin-bottom: 25px;
+  grid-gap: 25px;
+  grid-template-columns: 1fr;
+  padding: 0 25px;
+  ${({ theme }) => theme.responsive.sm} {
+    padding: 0 50px;
+    grid-template-columns: ${(p) => (p.columns > 1 ? '1fr 1fr' : '1fr')};
+  }
+  ${({ theme }) => theme.responsive.mdPlus} {
+    padding: 0 100px;
+
+    grid-template-columns: ${(p) => `repeat(${p.columns}, 1fr)`};
+  }
+`
 
 // Fine tune the query in the playground: https://api.crystallize.com/<your-tenant-identifier>/catalogue
+// Fetching a grid from our Voyage example directly by ID, change the ID your grid or fetch it from a folder with gridrelation, its up to you.
 const query = `
   {
-    catalogue(path: "/web-frontpage", language: "en") {
-      gridsToShow: component(id: "grids") {
-        content {
-          ... on GridRelationsContent {
-            grids {
-              id
+    grid(id:"5f6c7e9033ed22001d27982c"){
+      id
+      rows{
+        columns{
+          item {
+            ...on Document {
               name
-              rows {
-                columns {
-                  layout {
-                    colspan
-                    rowspan
+              path
+              intro: component(id: "intro") {
+                id
+                name
+                content {
+                  ... on RichTextContent {
+                    json
                   }
-                  item {
-                    path
-                    name
+                }
+              }
+              videos: component(id: "hero-video") {
+                content {
+                  ... on VideoContent {
+                    videos {
+                      playlists
+                      thumbnails {
+                        url
+                        altText
+                        variants {
+                          url
+                          width
+                          height
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              images: component(id: "hero") {
+                content {
+                  ... on ImageContent {
+                    images {
+                      url
+                      altText
+                      variants {
+                        url
+                        width
+                        height
+                      }
+                    }
                   }
                 }
               }
             }
+            ...on Product {
+              name
+              path
+    
+              defaultVariant{
+                price
+                images{
+                  variants{
+                    width
+                    url
+                  }
+                }
+              }
+            }
+            shape {
+              id
+              name
+            }
           }
-        }
+        }   
       }
-    }
+    }    
   }
 `
-
-const Pre = styled.pre(
-  ({ theme }) => `
-    display: block;
-    padding: 15px;
-    width: ${theme.screen.xs}px;
-  `
-)
 
 export async function getStaticProps() {
   const data = await fetcher(query)
@@ -50,5 +116,19 @@ export async function getStaticProps() {
 export default function Home(props) {
   const { data } = useSWR(query, { initialData: props.data })
 
-  return <Pre>{JSON.stringify(data, null, 2)}</Pre>
+  const grid = data?.data?.grid
+  return (
+    <Layout tint="black">
+      <Outer>
+        {grid?.rows?.map((row) => (
+          <GridRow columns={row?.columns?.length}>
+            {row?.columns?.map((column) => {
+              const { item } = column
+              return <Microformats {...item} />
+            })}
+          </GridRow>
+        ))}
+      </Outer>
+    </Layout>
+  )
 }

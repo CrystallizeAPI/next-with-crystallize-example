@@ -223,7 +223,6 @@ export async function getStaticPaths() {
 
 export default function Story({ data: initialData, path }) {
   const router = useRouter()
-
   const { data } = useSWR([query, { path }], {
     initialData,
   })
@@ -270,9 +269,10 @@ export default function Story({ data: initialData, path }) {
           {storyParagraphs.map(({ title, body, images, videos }, i) => {
             return (
               <>
-                {i === Math.round(storyParagraphs.length / 2) && (
-                  <FeaturedProducts products={featuredProducts} />
-                )}
+                {i === Math.round(storyParagraphs.length / 2) &&
+                  !!featuredProducts && (
+                    <FeaturedProducts products={featuredProducts} />
+                  )}
                 <Section images={images} videos={videos} key={i}>
                   <Content mirror={i % 2}>
                     <ContentInner>
@@ -286,7 +286,9 @@ export default function Story({ data: initialData, path }) {
               </>
             )
           })}
-          <FeaturedProducts products={featuredProducts} />
+          {!!featuredProducts && (
+            <FeaturedProducts products={featuredProducts} />
+          )}
         </Outer>
       </ScrollWrapper>
     </Layout>

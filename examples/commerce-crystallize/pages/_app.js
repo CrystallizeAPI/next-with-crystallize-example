@@ -22,8 +22,12 @@ const GlobalStyle = createGlobalStyle`
 const theme = {
   screen,
   responsive,
+  styles: {
+    borderRadius: '12px',
+  },
   colors: {
     primary: '#0070f3',
+    productBg: '#f6f6f6',
   },
 }
 

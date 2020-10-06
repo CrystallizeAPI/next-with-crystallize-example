@@ -3,11 +3,12 @@ import styled from 'styled-components'
 import Media from 'components/media'
 import CrystallizeContent from '@crystallize/content-transformer/react'
 import Link from 'next/link'
+
 const Outer = styled.div`
   background: #efefef;
   position: relative;
   padding-bottom: 56.25%; /* 16:9, for an aspect ratio of 1:1 change to this value to 100% */
-  border-radius: 18px;
+  border-radius: ${({ theme }) => theme.styles.borderRadius};
   overflow: hidden;
   box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
   transition: all 0.3s ease-in-out;
@@ -92,7 +93,6 @@ const Inner = styled.div`
 
 const StoryMicroformat = ({ name, path, intro, videos, images }) => {
   const hasMedia = videos?.content?.videos || images?.content?.images
-  console.log(name, hasMedia)
   return (
     <Link as={path} href={path}>
       <Outer>

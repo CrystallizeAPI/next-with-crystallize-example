@@ -9,27 +9,15 @@ const H1 = styled.h1`
   line-height: 110%;
   font-size: calc(24px + 1.8vw);
   max-width: 1000px;
-
-  color: ${(p) => (p.hasMedia ? '#fff' : '000')};
 `
 const Lead = styled.div`
   font-size: calc(12px + 0.5vw);
   max-width: 600px;
   text-align: center;
+`
 
-  color: ${(p) => (p.hasMedia ? '#fff' : '000')};
-`
-const Hero = styled.section`
-  height: 80vh;
-  position: relative;
-  display: flex;
-  overflow: hidden;
-  justify-content: center;
-  align-items: center;
-`
 const Block = styled.div`
   position: absolute;
-  background: rgba(0, 0, 0, 0.2);
 
   height: 100%;
   width: 100%;
@@ -52,7 +40,6 @@ const Arrow = styled.div`
     height: 4px;
     border-radius: 3px;
     content: '';
-    background: ${(p) => (p.hasMedia ? 'white' : 'black')};
     position: absolute;
     top: 0;
     z-index: 20;
@@ -67,21 +54,45 @@ const Arrow = styled.div`
     transform: rotate(35deg);
   }
 `
+const Hero = styled.section`
+  height: 80vh;
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+
+  ${H1} {
+    color: ${(p) => (p.hasMedia ? '#fff' : '000')};
+  }
+  ${Lead} {
+    color: ${(p) => (p.hasMedia ? '#fff' : '000')};
+  }
+  ${Block} {
+    background: ${(p) => (p.hasMedia ? 'rgba(0, 0, 0, 0.2)' : '#fff')};
+  }
+  ${Arrow} {
+    &:before,
+    &:after {
+      background: ${(p) => (p.hasMedia ? 'white' : 'black')};
+    }
+  }
+`
 
 const HeroBlock = ({ images, videos, title, lead }) => {
   const hasMedia = !!images || !!videos
   return (
-    <Hero>
+    <Hero hasMedia={hasMedia}>
       <Block>
-        {!!title && <H1 hasMedia={hasMedia}>{title}</H1>}
+        {!!title && <H1>{title}</H1>}
         {!!lead && (
-          <Lead hasMedia={hasMedia}>
+          <Lead>
             <CrystallizeContent {...lead?.json} />
           </Lead>
         )}
       </Block>
       {!!hasMedia && <Media images={images} videos={videos} nolazy />}
-      <Arrow hasMedia={hasMedia} />
+      <Arrow />
     </Hero>
   )
 }
