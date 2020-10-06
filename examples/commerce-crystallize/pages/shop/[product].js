@@ -14,7 +14,7 @@ const ProductWrapper = styled.section`
   display: grid;
   ${({ theme }) => theme.responsive.mdPlus} {
     grid-template-columns: 1fr 1fr;
-    min-height: 100vh;
+    min-height: 90vh;
   }
 `
 
@@ -37,6 +37,8 @@ const ImgWrapper = styled.div`
   position: relative;
   margin-top: 140px;
   height: auto;
+  border-radius: ${({ theme }) => theme.styles.borderRadius};
+
   img {
     width: 100%;
     height: auto;
@@ -45,7 +47,7 @@ const ImgWrapper = styled.div`
     margin-left: 100px;
   }
   ${({ theme }) => theme.responsive.mdPlus} {
-    height: 100vh;
+    height: 85vh;
     img {
       width: 100%;
       height: 100%;
@@ -92,7 +94,7 @@ const RichContent = styled.section`
   }
 `
 
-const Section = styled.div`
+const Section = styled.section`
   display: grid;
   margin: 50px auto;
   grid-template-columns: 1fr;
@@ -102,6 +104,8 @@ const Section = styled.div`
   }
 
   ${({ theme }) => theme.responsive.smPlus} {
+    margin: 200px auto;
+
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 `
@@ -165,6 +169,7 @@ const MediaWrapper = styled.div`
   grid-gap: 10px;
   grid-template-columns: 1fr;
   img {
+    border-radius: ${({ theme }) => theme.styles.borderRadius};
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -351,6 +356,7 @@ export default function Story({ data: initialData, path }) {
                 </BulkOuter>
               </Section>
             ))}
+
             {!!description?.content?.paragraphs?.length && (
               <Section>
                 <h3>{description?.name}</h3>
