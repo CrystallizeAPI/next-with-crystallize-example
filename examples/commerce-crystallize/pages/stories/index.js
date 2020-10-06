@@ -75,6 +75,7 @@ query GET_FOLDER($path: String!) {
       content {
         ... on RichTextContent {
           json
+          plainText
         }
       }
     }
@@ -153,7 +154,11 @@ const Stories = ({ data, errors }) => {
   }
   const hasMedia = !!hero.images || !!hero.videos
   return (
-    <Layout tint={hasMedia ? 'white' : 'black'}>
+    <Layout
+      tint={hasMedia ? 'white' : 'black'}
+      title={folder?.name}
+      description={folder?.title?.content?.text}
+    >
       <Hero {...hero} />
       <Outer>
         <H2>Some inspirational stories</H2>

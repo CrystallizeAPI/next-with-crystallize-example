@@ -127,7 +127,11 @@ export default function Story({ data: initialData, path }) {
 
   const hasMedia = !!hero.images || !!hero.videos
   return (
-    <Layout tint={hasMedia ? 'white' : 'black'}>
+    <Layout
+      tint={hasMedia ? 'white' : 'black'}
+      title={shop?.name}
+      description={shop?.title?.content?.text}
+    >
       <Outer>
         <Hero {...hero} />
         <Inner>

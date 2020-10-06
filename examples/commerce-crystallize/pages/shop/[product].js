@@ -1,4 +1,5 @@
 import useSWR from 'swr'
+import Head from 'next/head'
 import styled from 'styled-components'
 import Image from '@crystallize/react-image'
 import CrystallizeContent from '@crystallize/content-transformer/react'
@@ -150,6 +151,7 @@ query GET_PRODUCT($path: String!) {
       defaultVariant{
         price
         images{
+          url
           variants{
             width
             url
@@ -163,6 +165,7 @@ query GET_PRODUCT($path: String!) {
       content {
         ... on RichTextContent {
           json
+          plainText
         }
       }
     }
@@ -208,7 +211,6 @@ export async function getStaticPaths() {
 
 export default function Story({ data: initialData, path }) {
   const router = useRouter()
-  console.log(path)
   const { data } = useSWR([query, { path }], {
     initialData,
   })
@@ -224,41 +226,53 @@ export default function Story({ data: initialData, path }) {
   const summary = product?.summary?.content?.json
   const features = product?.features?.content?.sections
   return (
-    <Layout tint="black">
-      <Outer>
-        <ProductWrapper>
-          <ImgWrapper>
-            <Image {...defaultImage?.[0]} />
-          </ImgWrapper>
-          <Content>
-            <h1>{name}</h1>
-            <h2>${price}</h2>
-            <CrystallizeContent {...summary} />
-            <Btn
-              onClick={() =>
-                alert(
-                  'Functionality not implemented in this boiler, see our next.js boilerplate '
-                )
-              }
-            >
-              Buy
-            </Btn>
-          </Content>
-        </ProductWrapper>
-        <RichContent>
-          {features?.map((feature) => (
-            <PropertiesTable>
-              <h3>{feature?.title}</h3>
-              {feature?.properties?.map((property) => (
-                <Bulk>
-                  <h5>{property?.key}</h5>
-                  <p>{property?.value}</p>
-                </Bulk>
-              ))}
-            </PropertiesTable>
-          ))}
-        </RichContent>
-      </Outer>
-    </Layout>
+    <>
+      <Head>
+        <meta property="og:image" content={defaultImage?.[0]?.url} />
+      </Head>
+      <Layout
+        tint="black"
+        title={name}
+        description={product?.summary?.content?.plainText?.[0]}
+      >
+        <Outer>
+          <ProductWrapper>
+            <ImgWrapper>
+              <Image
+                {...defaultImage?.[0]}
+                sizes="@media(min-width:1024px) 50vw, 100vw"
+              />
+            </ImgWrapper>
+            <Content>
+              <h1>{name}</h1>
+              <h2>${price}</h2>
+              <CrystallizeContent {...summary} />
+              <Btn
+                onClick={() =>
+                  alert(
+                    'Functionality not implemented in this boiler, see our next.js boilerplate '
+                  )
+                }
+              >
+                Buy
+              </Btn>
+            </Content>
+          </ProductWrapper>
+          <RichContent>
+            {features?.map((feature) => (
+              <PropertiesTable>
+                <h3>{feature?.title}</h3>
+                {feature?.properties?.map((property) => (
+                  <Bulk>
+                    <h5>{property?.key}</h5>
+                    <p>{property?.value}</p>
+                  </Bulk>
+                ))}
+              </PropertiesTable>
+            ))}
+          </RichContent>
+        </Outer>
+      </Layout>
+    </>
   )
 }

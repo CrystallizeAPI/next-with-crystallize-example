@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Logo from 'ui/logo'
 import Link from 'next/link'
-
+import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 const navHeight = '130px'
@@ -56,29 +56,40 @@ const NavLink = styled.span`
   `}
 `
 
-const Layout = ({ tint = 'black', children }) => {
+const Layout = ({
+  tint = 'black',
+  title,
+  description = 'Great stories happen to those who can tell them',
+  children,
+}) => {
   const router = useRouter()
   const activeNav = `/${router?.asPath?.split('/')?.[1]}`
   return (
-    <Main>
-      <Header>
-        <Link to="/" href="/">
-          <LogoWrapper>
-            <Logo size="200" color={tints[tint]} />
-          </LogoWrapper>
-        </Link>
-        <Navigation color={tints[tint]}>
-          <Link to="/stories" href="/stories">
-            <NavLink active={activeNav === '/stories'}>Stories</NavLink>
+    <>
+      <Head>
+        <title>{!!title ? `${title} | Voyage` : 'Voyage'}</title>
+        <meta name="description" content={description} />
+      </Head>
+      <Main>
+        <Header>
+          <Link to="/" href="/">
+            <LogoWrapper>
+              <Logo size="200" color={tints[tint]} />
+            </LogoWrapper>
           </Link>
-          <Link to="/shop" href="/shop">
-            <NavLink active={activeNav === '/shop'}>Shop</NavLink>
-          </Link>
-        </Navigation>
-      </Header>
-      {children}
-      <Footer />
-    </Main>
+          <Navigation color={tints[tint]}>
+            <Link to="/stories" href="/stories">
+              <NavLink active={activeNav === '/stories'}>Stories</NavLink>
+            </Link>
+            <Link to="/shop" href="/shop">
+              <NavLink active={activeNav === '/shop'}>Shop</NavLink>
+            </Link>
+          </Navigation>
+        </Header>
+        {children}
+        <Footer />
+      </Main>
+    </>
   )
 }
 

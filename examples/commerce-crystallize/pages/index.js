@@ -122,10 +122,9 @@ export default function Home(props) {
       <Outer>
         {grid?.rows?.map((row) => (
           <GridRow columns={row?.columns?.length}>
-            {row?.columns?.map((column) => {
-              const { item } = column
-              return <Microformats {...item} />
-            })}
+            {row?.columns?.map((column) => (
+              <Microformats {...column?.item} />
+            ))}
           </GridRow>
         ))}
       </Outer>

@@ -79,6 +79,7 @@ query GET_STORY($path: String!) {
       content {
         ... on RichTextContent {
           json
+          plainText
         }
       }
     }
@@ -239,7 +240,11 @@ export default function Story({ data: initialData, path }) {
   const featuredProducts = story?.featuredProducts?.content?.items
 
   return (
-    <Layout tint="white">
+    <Layout
+      tint="white"
+      title={story?.name}
+      description={story?.intro?.content?.plainText?.[0]}
+    >
       <ScrollWrapper>
         <Outer>
           <Section images={heroImages} videos={heroVideos} nolazy>
