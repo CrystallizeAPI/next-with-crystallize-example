@@ -30,7 +30,14 @@ const LogoWrapper = styled.div`
   overflow: hidden;
   cursor: pointer;
   svg {
-    width: 100%;
+    width: 130px;
+    height: 130px;
+    margin-top: 10px;
+    ${({ theme }) => theme.responsive.mdPlus} {
+      margin-top: 0;
+      width: 100%;
+      height: 200px;
+    }
   }
 `
 const Main = styled.main``
@@ -45,8 +52,8 @@ const NavLink = styled.span`
   display: flex;
   font-weight: 600;
   cursor: pointer;
-  font-size: 18px;
-  padding: 0 30px;
+  font-size: 15px;
+  padding: 0 15px;
   align-items: center;
   height: ${navHeight};
   ${(p) =>
@@ -54,8 +61,13 @@ const NavLink = styled.span`
     `
     font-weight: 900;
   `}
-`
 
+  ${({ theme }) => theme.responsive.mdPlus} {
+    font-size: 18px;
+
+    padding: 0 30px;
+  }
+`
 const Layout = ({
   tint = 'black',
   title,

@@ -21,7 +21,7 @@ const GridRow = styled.section`
     grid-template-columns: ${(p) => (p.columns > 1 ? '1fr 1fr' : '1fr')};
   }
   ${({ theme }) => theme.responsive.mdPlus} {
-    padding: 0 0 0 100px;
+    padding: 0 100px 0 100px;
 
     grid-template-columns: ${(p) => `repeat(${p.columns}, 1fr)`};
   }

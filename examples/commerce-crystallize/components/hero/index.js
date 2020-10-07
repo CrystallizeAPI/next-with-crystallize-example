@@ -18,7 +18,6 @@ const Lead = styled.div`
 
 const Block = styled.div`
   position: absolute;
-
   height: 100%;
   width: 100%;
   display: flex;
@@ -27,6 +26,11 @@ const Block = styled.div`
   align-items: center;
   z-index: 10;
   text-align: center;
+  padding: 0 2rem;
+
+  ${({ theme }) => theme.responsive.mdPlus} {
+    padding: 0;
+  }
 `
 
 const Arrow = styled.div`

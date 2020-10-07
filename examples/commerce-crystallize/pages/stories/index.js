@@ -10,8 +10,11 @@ import MicroFormats from 'components/microformats'
 const Outer = styled.div`
   width: 100%;
   background: #fff;
-  padding: 150px 100px;
+  padding: 50px 25px;
   min-height: 80vh;
+  ${({ theme }) => theme.responsive.mdPlus} {
+    padding: 150px 100px;
+  }
 `
 const H2 = styled.h2`
   font-size: calc(12px + 1.3vw);
@@ -20,8 +23,12 @@ const H2 = styled.h2`
 `
 const Inner = styled.div`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 25px;
+  grid-template-columns: 1fr;
+  grid-gap: 15px;
+  ${({ theme }) => theme.responsive.mdPlus} {
+    grid-gap: 25px;
+    grid-template-columns: repeat(2, 1fr);
+  }
 `
 
 const query = `
