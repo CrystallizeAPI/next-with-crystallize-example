@@ -3,8 +3,8 @@ import styled from 'styled-components'
 
 import Hero from 'components/hero'
 import Layout from 'components/layout'
-// import List from 'components/item-list'
 import Product from 'components/microformats/product'
+import Meta from 'components/meta'
 
 const Outer = styled.section`
   background: #fff;
@@ -125,21 +125,27 @@ export default function Story({ data: initialData, path }) {
     title: shop?.title?.content?.text,
   }
 
+  const meta = {
+    title: shop?.name,
+    description: shop?.title?.content?.text,
+    mediaUrl: shop?.hero_images?.content?.images,
+    type: 'website',
+  }
+
   const hasMedia = !!hero.images || !!hero.videos
   return (
-    <Layout
-      tint={hasMedia ? 'white' : 'black'}
-      title={shop?.name}
-      description={shop?.title?.content?.text}
-    >
-      <Outer>
-        <Hero {...hero} />
-        <Inner>
-          {shop?.children?.map((child) => (
-            <Product {...child} key={child?.id} />
-          ))}
-        </Inner>
-      </Outer>
-    </Layout>
+    <>
+      <Meta {...meta} />
+      <Layout tint={hasMedia ? 'white' : 'black'}>
+        <Outer>
+          <Hero {...hero} />
+          <Inner>
+            {shop?.children?.map((child) => (
+              <Product {...child} key={child?.id} />
+            ))}
+          </Inner>
+        </Outer>
+      </Layout>
+    </>
   )
 }

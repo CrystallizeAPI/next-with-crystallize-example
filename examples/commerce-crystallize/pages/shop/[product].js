@@ -1,5 +1,4 @@
 import useSWR from 'swr'
-import Head from 'next/head'
 import styled from 'styled-components'
 import Image from '@crystallize/react-image'
 import CrystallizeContent from '@crystallize/content-transformer/react'
@@ -7,6 +6,7 @@ import { useRouter } from 'next/router'
 
 import { fetcher } from 'lib/graphql'
 import Layout from 'components/layout'
+import Meta from 'components/meta'
 
 const Outer = styled.div``
 const ProductWrapper = styled.section`
@@ -309,28 +309,35 @@ export default function Story({ data: initialData, path }) {
   const features = product?.features?.content?.sections
   const description = product?.description
 
+  const meta = {
+    title: name,
+    description: product?.summary?.content?.plainText?.[0],
+    mediaUrl: defaultImage?.[0]?.url,
+    type: 'product',
+  }
+
   return (
     <>
-      <Head>
-        <meta property="og:image" content={defaultImage?.[0]?.url} />
-      </Head>
-      <Layout
-        tint="black"
-        title={name}
-        description={product?.summary?.content?.plainText?.[0]}
-      >
+      <Meta {...meta} />
+      <Layout tint="black">
         <Outer>
-          <ProductWrapper>
-            <ImgWrapper>
+          <ProductWrapper itemScope itemType="http://schema.org/Product">
+            <ImgWrapper itemProp="image">
               <Image
                 {...defaultImage?.[0]}
+                itemProp="image"
                 sizes="@media(min-width:1024px) 50vw, 100vw"
               />
             </ImgWrapper>
             <Content>
-              <h1>{name}</h1>
-              <h2>${price}</h2>
-              <CrystallizeContent {...summary} />
+              <h1 itemProp="name">{name}</h1>
+              <h2>
+                <span itemProp="priceCurrency" content="USD">
+                  $
+                </span>
+                <span itemProp="price">{price}</span>
+              </h2>
+              <CrystallizeContent itemProp="description" {...summary} />
               <Btn
                 onClick={() =>
                   alert(

@@ -2,7 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import Logo from 'ui/logo'
 import Link from 'next/link'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 const navHeight = '130px'
@@ -68,20 +67,11 @@ const NavLink = styled.span`
     padding: 0 30px;
   }
 `
-const Layout = ({
-  tint = 'black',
-  title,
-  description = 'Great stories happen to those who can tell them',
-  children,
-}) => {
+const Layout = ({ tint = 'black', children }) => {
   const router = useRouter()
   const activeNav = `/${router?.asPath?.split('/')?.[1]}`
   return (
     <>
-      <Head>
-        <title>{!!title ? `${title} | Voyage` : 'Voyage'}</title>
-        <meta name="description" content={description} />
-      </Head>
       <Main>
         <Header>
           <Link to="/" href="/">

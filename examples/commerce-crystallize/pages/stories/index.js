@@ -4,7 +4,7 @@ import { fetcher } from 'lib/graphql'
 
 import Hero from 'components/hero'
 import Layout from 'components/layout'
-
+import Meta from 'components/meta'
 import MicroFormats from 'components/microformats'
 
 const Outer = styled.div`
@@ -159,23 +159,28 @@ const Stories = ({ data, errors }) => {
     lead: folder?.intro?.content,
     title: folder?.title?.content?.text,
   }
+  const meta = {
+    title: folder?.title?.content?.text,
+    description: folder?.intro?.content?.plainText?.[0],
+    mediaUrl: folder?.hero_images?.content?.images,
+    type: 'website',
+  }
   const hasMedia = !!hero.images || !!hero.videos
   return (
-    <Layout
-      tint={hasMedia ? 'white' : 'black'}
-      title={folder?.name}
-      description={folder?.title?.content?.text}
-    >
-      <Hero {...hero} />
-      <Outer>
-        <H2>Some inspirational stories</H2>
-        <Inner>
-          {folder?.children.map((child, i) => (
-            <MicroFormats {...child} />
-          ))}
-        </Inner>
-      </Outer>
-    </Layout>
+    <>
+      <Meta {...meta} />
+      <Layout tint={hasMedia ? 'white' : 'black'}>
+        <Hero {...hero} />
+        <Outer>
+          <H2>Some inspirational stories</H2>
+          <Inner>
+            {folder?.children.map((child, i) => (
+              <MicroFormats {...child} />
+            ))}
+          </Inner>
+        </Outer>
+      </Layout>
+    </>
   )
 }
 
