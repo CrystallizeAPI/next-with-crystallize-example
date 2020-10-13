@@ -6,6 +6,7 @@ const MetaGenerator = ({
   mediaUrl,
   siteName = 'Voyage',
 }) => {
+  //@TODO add OG:URL
   return (
     <Head>
       <meta name="robots" content="index, follow" />

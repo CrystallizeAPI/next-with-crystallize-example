@@ -109,8 +109,7 @@ const query = `
 `
 export async function getStaticProps() {
   const data = await fetcher(query)
-
-  return { props: { data } }
+  return { props: { data }, revalidate: 1 }
 }
 
 export default function Story({ data: initialData, path }) {

@@ -179,7 +179,13 @@ const MediaWrapper = styled.div`
     grid-template-columns: ${(p) => `repeat(${p.count}, 1fr)`};
   }
 `
-
+const Offer = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  h2 {
+    grid-column-end: span 2;
+  }
+`
 // Fine tune the query in the playground: https://api.crystallize.com/<your-tenant-identifier>/catalogue
 const query = `
 query GET_PRODUCT($path: String!) {
@@ -194,6 +200,8 @@ query GET_PRODUCT($path: String!) {
       path
       defaultVariant{
         price
+        stock
+        sku
         images{
           url
           variants{
@@ -305,6 +313,8 @@ export default function Story({ data: initialData, path }) {
   const defaultImage = data?.data?.product?.defaultVariant?.images
   const name = product?.name
   const price = product?.defaultVariant?.price
+  const sku = product?.defaultVariant?.sku
+  // const stock = product?.defaultVariant?.stock
   const summary = product?.summary?.content?.json
   const features = product?.features?.content?.sections
   const description = product?.description
@@ -315,7 +325,6 @@ export default function Story({ data: initialData, path }) {
     mediaUrl: defaultImage?.[0]?.url,
     type: 'product',
   }
-
   return (
     <>
       <Meta {...meta} />
@@ -329,19 +338,33 @@ export default function Story({ data: initialData, path }) {
                 sizes="@media(min-width:1024px) 50vw, 100vw"
               />
             </ImgWrapper>
+
             <Content>
               <h1 itemProp="name">{name}</h1>
-              <h2>
-                <span itemProp="priceCurrency" content="USD">
-                  $
-                </span>
-                <span itemProp="price">{price}</span>
-              </h2>
+              <span itemProp="sku" style={{ display: 'none' }}>
+                {sku}
+              </span>
+              <span itemProp="description" style={{ display: 'none' }}>
+                {meta.description}
+              </span>
+
+              <Offer
+                itemScope
+                itemProp="offers"
+                itemType="https://schema.org/Offer"
+              >
+                <h2>
+                  <span itemProp="priceCurrency" content="USD">
+                    $
+                  </span>
+                  <span itemProp="price">{price}</span>
+                </h2>
+              </Offer>
               <CrystallizeContent itemProp="description" {...summary} />
               <Btn
                 onClick={() =>
                   alert(
-                    'Functionality not implemented in this boiler, see our next.js boilerplate '
+                    'Functionality not implemented yet in this boiler, see our next.js boilerplate '
                   )
                 }
               >

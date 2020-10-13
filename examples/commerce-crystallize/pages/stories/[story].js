@@ -248,9 +248,9 @@ export default function Story({ data: initialData, path }) {
   return (
     <>
       <Meta {...meta} />
-      <Layout tint="white">
+      <Layout tint="white" hideFooter>
         <ScrollWrapper>
-          <Outer itemScope itemType="http://schema.org/Product">
+          <Outer itemScope itemType="http://schema.org/Article">
             <Section images={heroImages} videos={heroVideos} nolazy>
               <Content fold={true}>
                 <Title h1 itemProp="name">
